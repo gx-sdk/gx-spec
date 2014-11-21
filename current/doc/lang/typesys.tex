@@ -31,6 +31,10 @@ processor features or to wrap common user types in an expressive way.
 
 \begin{enumerate}
 
+\item {\tt *}{\em target} -- A pointer type. Similar to the C construct
+of the same name, values of this type hold the location of a value of
+type {\em target}.
+
 \item {\tt bcd<}{\em N}{\tt >} -- Binary-coded decimal (BCD) value of
 {\em N} decimal digits. Values of this type require at least $N \times
 4$ bits of memory. Please see Appendix TODO for potential issues when
