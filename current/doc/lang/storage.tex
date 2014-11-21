@@ -1,0 +1,40 @@
+\section{Storage}
+
+\gx{} gives the programmer a significant amount of control over how values
+are laid out in memory, as this is essential to writing effective Genesis
+ROMs. A number of qualifiers can be attached to a storage declaration
+that determine where in memory the value will be stored, and what sorts
+of properties it has.
+
+\subsection{Random Access Memory (RAM)}
+
+This is where variables are located by default. Values in this region
+can be read from or written to. The programmer may force a value be
+stored in RAM by using the {\tt ram} keyword.
+
+Many times it is useful to be able to reuse different parts of RAM. An
+example use case might be state-specific chunks of memory, such as
+per-level in a game. For this, \gx{} provides ``RAM regions''. A
+RAM ``region'' is a named section of RAM with 0 or more named
+``layers''. Variables can be assigned to each layer as appropriate. Layers
+will be overlapped in RAM as if they were members of a giant C {\tt
+union}. Regions will never overlap other allocated regions of RAM.
+
+\subsection{Read-Only Memory (ROM)}
+
+The compiler may choose to consider variables that can proven read-only
+as ROM variables. The programmer may also specify that a variable is a
+ROM variable by using the {\tt rom} keyword. ROM variables are read-only;
+an attempt to write to one is an error and will prevent compilation.
+
+The layout of variables in ROM can be important to a given application. In
+addition to the standard alignment and direct addressing layout directives
+present in most assemblers and as common C compiler extensions, \gx{}
+provides ``ROM frames''. A ROM frame specifies how many of the least
+significant bits of the addresses allocated to the variable are allowed
+to change. In other words, this can be used to prevent a variable from
+crossing certain address boundaries.
+
+\subsection{Memory-Mapped Peripherals}
+
+TODO (this is the part where i re-implement {\tt volatile})
