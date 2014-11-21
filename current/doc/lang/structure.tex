@@ -1,0 +1,13 @@
+\section{Project Structure}
+
+A \gx{} program is a collection of multiple {\tt .gx} source files which
+form one logical project. The \gx{} compiler builds entire projects
+directly from their source files. This is possible because the ROM output
+is at most 4 megabytes in size, which should fit comfortably in memory
+on any modern system.
+
+The project itself is a bucket of ``units'', which are little more than
+namespaces. Units are closely tied to the memory model.
+
+Within each unit is a collection of code segments in the form of
+functions, storage declarations, and type declarations.

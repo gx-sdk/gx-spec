@@ -1,0 +1,41 @@
+\chapter{Motivation}
+
+These days, the Sega Genesis/Mega Drive is, on a global scale, mostly
+irrelevant, and for those places where it's {\em still} relevant, there
+are already tools and experts available for crafting Genesis games. This
+raises the question of why somebody would bother with designing and
+implementing an SDK for it.
+
+\begin{enumerate}
+
+{\bf \item The Sega Genesis homebrew scene is relatively small.} To
+be fair, not much digging was done before reaching this conclusion,
+but it's pretty clear from wandering around IRC and other such places
+that of the classic consoles people just aren't as interested in the
+Genesis as they are consoles like the NES or SNES. Although there are
+people making Genesis games, the number of people making homebrew games
+for other consoles is clearly larger. Creating an SDK would lower the
+barrier to entry for Genesis homebrew development, helping create a more
+vibrant homebrew scene.
+
+{\bf \item Current toolchains are lacking.} Homebrew Genesis games
+are often built with a combination of assembly and C, much like was
+probably done in game studios in the Genesis' heyday. This gives the
+programmer complete control over all aspects of the system, which allows
+them to squeeze out every bit of performance possible. However, modern
+C compilers are often designed for single-target systems, so taking
+advantage of the Genesis Z80 coprocessor is a lot more work than it
+really needs to be. Fighting the compiler's optimizer is another real
+problem, and optimizing things like VDP writes still needs to be done
+by hand. The whole process is very rigid, fragile, and manual, and not
+conducive to fast-turnaround homebrew development.
+
+{\bf \item It's a non-trivial personal challenge.} Attempting to build
+a toolchain for a hardware system is not something you get done in a
+couple weekends, and it's not something you can write after your first
+run through {\em Learn Java in 30 days}. It's an exciting opportunity
+to apply some of the many skills I've gathered over the years, and
+to ultimately create a homebrew game. If \gx{} turns into something
+functional, I'll consider it a success.
+
+\end{enumerate}

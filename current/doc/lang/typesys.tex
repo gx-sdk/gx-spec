@@ -1,0 +1,78 @@
+\section{Type System}
+
+\gx{} is a strongly statically-typed language, meaning all conversions
+between types must be explicit, and the type of every value is known at
+compile time. The in-memory representation of values is well-specified,
+and conversion to and from basic integer types is made available whenever
+possible.
+
+\subsection{Basic Type Summary}
+
+The following basic types are built in to the language.
+
+\begin{enumerate}
+
+\item {\tt u8}, {\tt u16}, {\tt u32} -- Unsigned integer values
+of 8, 16, and 32 bits respectively.
+
+\item {\tt s8}, {\tt s16}, {\tt s32} -- Signed integer values of 8,
+16, and 32 bits respectively.
+
+\item {\tt bool} -- A single binary value, with the value {\tt true}
+or {\tt false}. If many boolean values appear next to each other, the
+compiler may choose to have them packed as individual bits as compactly as
+possible in a way that does not make significant performance sacrifices.
+
+\end{enumerate}
+
+The following types are built in to the language and have parameters that
+affect their behavior. These were designed to take advantage of certain
+processor features or to wrap common user types in an expressive way.
+
+\begin{enumerate}
+
+\item {\tt bcd<}{\em N}{\tt >} -- Binary-coded decimal (BCD) value of
+{\em N} decimal digits. Values of this type require at least $N \times
+4$ bits of memory. Please see Appendix TODO for potential issues when
+working with BCD types.
+
+\item {\tt fixed<}{\em M}{\tt,}{\em N}{\tt >} -- Fixed point arithmetic
+value with {\em M} bits of whole part and {\em N} bits of fractional
+part. Values of this type require at least $M + N$ bits of memory. Please
+see Appendix TODO for potential issues when working with BCD types.
+
+\end{enumerate}
+
+\subsection{Compound Type Summary}
+
+The following compound type constructs are available.
+
+\begin{enumerate}
+
+\item {\tt struct} {\em name} {\tt \{} {\em members \dots} {\tt \}}
+-- Similar to the C construct of the same name, {\tt struct} places its
+members consecutively in memory.
+
+\item {\tt enum} {\em name} {\tt \{} {\em variants \dots} {\tt \}} --
+Similar to the Rust construct of the same name, {\tt enum} is \gx{}'s
+tagged union type. It should be noted that {\tt enum}s are occasionally
+more memory efficient than the equivalent C, since many instances of
+an {\tt enum} will only require enough space for the active variant,
+such as constants and certain instances of local variables.
+
+\item {\tt bitvec} {\em name} {\tt (} {\em fields \dots} {\tt )} -- A
+bit vector. This is essentially a bit-packed version of {\tt struct},
+with much tighter control over field sizes. {\tt bitvec}s with fewer
+than 32 bits are as efficient as {\tt u32}s in many cases. The goal is to
+replace tedious masking and shifting needed when working with bit-packed
+values. In many cases the compiler can detect effective optimization
+opportunities for making {\tt bitvec} field accesses very fast. See
+Appendix TODO for tips on getting the most out of {\tt bitvec}s.
+
+\item {\tt bitpat} {\em name} {\tt (} {\em pattern} {\tt )} -- A type that
+scrambles logical bits to get their physical ordering. This can be useful
+for certain kinds of encoder and decoder. The goal is to replace tedious
+masking and shifting needed when working with bit-packed values. See
+Appendix TODO for tips on getting the most out of {\tt bitpat}s.
+
+\end{enumerate}
