@@ -1,3 +1,51 @@
 \section{Control Structures}
 
-TODO
+\gx{} provides a number of wrappers around common assembly language
+control flow patterns. The key here is to encourage optimizability,
+and to make certain patterns less tedious and error-prone.
+
+\subsection{Branching}
+
+The following branching structures allow the programmer to conditionally
+redirect the flow of code.
+
+\begin{enumerate}
+
+\item {\tt if (}{\em condition}{\tt ) \{} {\em body} {\tt \}} -- Execute
+{\em body} only when the expression {\em condition} has a non-zero,
+non-false value.
+
+\item {\tt if (}{\em condition}{\tt ) \{} {\em body1} {\tt \} else \{}
+{\em body2} {\tt \}} -- Execute {\em body1} when {\em condition} has a
+non-zero, non-false value, otherwise execute {\em body2}.
+
+\item {\tt switch (}{\em expression}{\tt ) \{ case} {\em value}{\tt :}
+{\em body ...} {\tt \}} -- Evaluates the given expression and follows
+the first matching branch. See appendix TODO for tips on getting the
+most out of {\tt switch} blocks.
+
+\end{enumerate}
+
+\subsection{Looping}
+
+The following looping structures allow the programmer to repeat sections
+of code in various vays.
+
+\begin{enumerate}
+
+\item {\tt loop \{} {\em body} {\tt \}} -- Repeats the given code
+section forever.
+
+\item {\tt while (}{\em condition}{\tt ) \{} {\em body} {\tt \}} --
+Execute {\em body} only while the expression {\em condition} has a
+non-zero, non-false value.
+
+\item {\tt for (}{\em identifier} {\tt in} {\em iterable ...}{\tt ) \{}
+{\em body} {\tt \}} -- Repeats the given section of code for every item
+in the given {\em iterable}, with the value assigned to {\em identifier}.
+As the most flexible and common looping structure, a wide variety of
+optimizations have gone into making {\tt for} loops efficient while
+remaining expressive. See Appendix TODO for tips on getting the most
+out of {\tt for} loops.
+
+\end{enumerate}
