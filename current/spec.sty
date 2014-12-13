@@ -2,6 +2,7 @@
 
 \RequirePackage{fullpage}
 \RequirePackage{hyperref}
+\RequirePackage{fixltx2e}
 
 \RequirePackage{cleveref}
 \crefname{section}{\S}{\S\S}
@@ -11,3 +12,15 @@
 
 \newcommand{\gx}{{\tt gx}}
 \newcommand{\gxVersion}{0.1-dev}
+
+% grammar rules etc
+\newenvironment{grammar}
+	{\begin{center} \begin{tabular} {rl} }
+	{\end{tabular}  \end{center}         }
+
+\newcommand{\grVar}[2][]{{\em #2}\textsubscript{#1}}
+\newcommand{\grTok}[1]{{\bf #1}}
+\newcommand{\grLit}[1]{`{\tt #1}'}
+
+\newcommand{\grRule}[2]{\grVar{#1} {\tt ::=} & #2 \\}
+\newcommand{\grRuleCont}[1]{{\tt |} & #1 \\}

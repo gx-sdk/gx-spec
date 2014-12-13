@@ -1,3 +1,8 @@
 \section{Syntax}
 
-TODO
+\begin{grammar}
+\grRule{if-stmt}{\grTok{if} \grVar[cond]{expression} \grVar[tb]{compound}}
+\grRuleCont{\grTok{if} \grVar[cond]{expression} \grVar[tb]{compound}
+            \grTok{else} \grVar[fb]{compound}}
+\grRule{compound}{\grLit{\{} \grVar{stmt-list} \grLit{\}}}
+\end{grammar}
