@@ -5,3 +5,59 @@ This section specifies anything related to the compiled interface of
 the language, including calling conventions and type implementations,
 so that programmers can safely write C and assembly extensions to their
 \gx{} code.
+
+\subsection{Calling Convention}
+
+All semantic function/method calls map to this calling convention. A
+basic call is a sequence of 0 or more arguments, and 0 or more return
+values. How the language features map down onto this structure are
+described in the later parts of this subsection.
+
+The calling convention itself is not designed to be as fast as
+possible. The optimizer features an aggressive inliner which attempts
+to reduce the number of actual function calls used without making the
+final program text too large.
+
+\subsubsection{68000 {\tt gx} Calls}
+
+Arguments are passed in registers, starting from lower-numbered registers,
+moving toward higher-numbered ones. Argument allocation spills to the
+stack, with the leftmost spilled arguments on the top of the stack.
+Whether an argument is allocated to the {\tt a0-5} or {\tt d0-7} register
+range depends on whether the particular argument is a-type or d-type.
+See \ref{subsec:abitypes} for more information on a-type and d-type.
+
+Calling is performed with either the {\tt BSR} or {\tt JSR}
+instruction. Returning is performed with {\tt RTS}. {\tt a6} performs the
+function of frame pointer, and the {\tt LINK} and {\tt UNLK} instructions
+are used, when neccessary, for establishing and releasing stack frames.
+
+As a simple example, the following sequence of argument types has the
+given argument register assignments:
+
+\begin{center}\begin{tabular}{r|c|l}
+offset  & type        & register  \\ \hline
+0       & {\tt  u32}  & {\tt d0}  \\
+1       & {\tt  u32}  & {\tt d1}  \\
+2       & {\tt  *u8}  & {\tt a0}  \\
+3       & {\tt  u16}  & {\tt d2}  \\
+4       & {\tt *s32}  & {\tt a1}
+\end{tabular}\end{center}
+
+Return values are allocated in the same manner. However, since most
+functions will have at most 1 return value, this means the return value
+will only ever be {\tt d0} or {\tt a0}, again, depending on whether the
+return value is d-type or a-type.
+
+The callee is responsible for saving any registers not used for arguments
+or return values. This way the callee doesn't need to waste time if no
+extra registers are needed.
+
+\subsection{Type Implementations}
+\label{subsec:abitypes}
+
+There are d-types and a-types. d-types are anything not to be
+dereferenced. a-types are anything that would need to be dereferenced,
+such as the base pointer for an array, or a pointer to a struct. There
+are clear rules for deciding if a value is a-type or d-type, which I
+will describe here eventually.
