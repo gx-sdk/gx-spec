@@ -14,12 +14,14 @@
 
 % grammar rules etc
 \newenvironment{grammar}
-	{\begin{center} \begin{tabular} {rl} }
+	{\begin{center} \begin{tabular} {rrl} }
 	{\end{tabular}  \end{center}         }
 
-\newcommand{\grVar}[2][]{{\em #2}$_\mathrm{#2}$}
+\newcommand{\grVar}[2][]{$\langle$#2$\rangle_\mathrm{#1}$}
 \newcommand{\grTok}[1]{{\bf #1}}
-\newcommand{\grLit}[1]{`{\tt #1}'}
+\newcommand{\grLit}[1]{\texttt{#1}}
+\newcommand{\grEmpty}{$\epsilon$}
+\newcommand{\grRepeat}[1]{[ #1 ... ]}
 
-\newcommand{\grRule}[2]{\grVar{#1} {\tt ::=} & #2 \\}
-\newcommand{\grRuleCont}[1]{{\tt |} & #1 \\}
+\newcommand{\grRule}[2]{\grVar{#1} & {\tt ::=} & #2 \\}
+\newcommand{\grRuleCont}[1]{& {\tt |} & #1 \\}
