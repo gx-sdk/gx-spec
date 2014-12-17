@@ -58,12 +58,12 @@ The following compound type constructs are available.
 sequence of values of a single type. The semantics of arrays can be
 somewhat complicated.
 
-\item {\tt struct} {\em name} {\tt \{} {\em members \dots} {\tt \}}
+\item {\tt struct} {\em name} {\tt \string{} {\em members \dots} {\tt \string}}
 -- Similar to the C construct of the same name, {\tt struct} places its
 members consecutively in memory.
 
-\item {\tt enum} {\em name} {\tt \{} {\em variants \dots} {\tt \}} --
-Similar to the Rust construct of the same name, {\tt enum} is \gx{}'s
+\item {\tt enum} {\em name} {\tt \string{} {\em variants \dots} {\tt \string}}
+-- Similar to the Rust construct of the same name, {\tt enum} is \gx{}'s
 tagged union type. It should be noted that {\tt enum}s are occasionally
 more memory efficient than the equivalent C, since many instances of
 an {\tt enum} will only require enough space for the active variant,

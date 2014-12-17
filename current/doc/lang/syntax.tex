@@ -6,7 +6,8 @@ This section describes the syntax of the \gx{} language.
 
 \begin{grammar}
 \grRule{file}{\grRepeat{\grVar{unit}}}
-\grRule{unit}{\grTok{unit} \grLit{\{} \grRepeat{\grVar{decl}} \grLit{\}}}
+\grRule{unit}{\grTok{unit} \grLit{\string{}
+              \grRepeat{\grVar{decl}} \grLit{\string}}}
 \end{grammar}
 
 A single input file is a list of units. A \gx{} program with multiple
@@ -39,8 +40,8 @@ for another type.
 \grRuleCont{\grTok{bcd} \grLit{<} \grVar{number} \grLit{>}}
 \grRuleCont{\grTok{fixed} \grLit{<} \grVar{number}
             \grLit{,} \grVar{number} \grLit{>}}
-\grRuleCont{\grTok{struct} \grLit{\{}
-            \grRepeat{\grVar{storage-decl}} \grLit{\}}}
+\grRuleCont{\grTok{struct} \grLit{\string{}
+            \grRepeat{\grVar{storage-decl}} \grLit{\string}}}
 \grRuleCont{\grVar{bitvec-spec}}
 \end{grammar}
 
@@ -48,8 +49,10 @@ A \grVar{type-spec} specifies a type.
 
 \begin{grammar}
 \grRule{bitvec-spec}{\grTok{bitvec} \grLit{(} \grVar{bitvec-body} \grLit{)}}
-\grRule{bitvec-body}{\grVar{bitvec-body} \grLit{,} \grVar{bitvec-member}}
+\grRule{bitvec-body}{\grVar{bitvec-body$_2$}}
 \grRuleCont{\grEmpty}
+\grRule{bitvec-body$_2$}{\grVar{bitvec-body$_2$} \grLit{,} \grVar{bitvec-member}}
+\grRuleCont{\grVar{bitvec-member}}
 \grRule{bitvec-member}{\grVar{binary-string}}
 \grRuleCont{\grVar{id} \grLit{:} \grVar{number}}
 \end{grammar}
@@ -58,3 +61,83 @@ A \grVar{bitvec-spec} describes a bitvector type. As a
 \grVar{bitvec-member}, a \grVar{binary-string} specifies a literal string
 of bits to put into instances of the bitvector. An \grVar{id} specifies
 a named region of bits, where \grVar{number} specifies the number of bits.
+
+\subsection{Functions}
+
+\begin{grammar}
+\grRule{func-decl}{\grVar{func-heading}
+                   \grLit{\string{} \grVar{func-body} \grLit{\string}}}
+\grRule{func-heading}{\grTok{fn} \grVar{id} \grLit{(}
+                      \grVar{func-params} \grLit{)} \grLit{:} \grVar{type-spec}}
+\grRule{func-params}{\grVar{func-params$_2$}}
+\grRuleCont{\grEmpty}
+\grRule{func-params$_2$}{\grVar{func-params$_2$} \grLit{,} \grVar{func-param}}
+\grRuleCont{\grVar{func-param}}
+\grRule{func-param}{\grVar{id}}
+\grRuleCont{\grVar{id} \grLit{:} \grVar{type-spec}}
+\grRule{func-body}{\grVar{stmt-list}}
+\end{grammar}
+
+\subsection{Statements}
+
+\begin{grammar}
+\grRule{stmt-list}{\grVar{stmt-list} \grVar{stmt}}
+\grRuleCont{\grEmpty}
+\grRule{stmt}{\grVar{expr} \grLit{;}}
+\grRuleCont{\grLit{\string{} \grVar{stmt-list} \grLit{\string}}}
+\grRuleCont{\grVar{if-stmt}}
+\grRuleCont{\grVar{switch-stmt}}
+\grRuleCont{\grVar{loop-stmt}}
+\grRuleCont{\grVar{while-stmt}}
+\grRuleCont{\grVar{for-stmt}}
+\grRuleCont{\grTok{break} \grLit{;}}
+\grRuleCont{\grTok{continue} \grLit{;}}
+\grRuleCont{\grTok{repeat} \grLit{;}}
+\end{grammar}
+
+This is the top level statement structure.
+
+\begin{grammar}
+\grRule{if-stmt}{\grTok{if} \grLit{(} \grVar{expr} \grLit{)} \grVar[1]{stmt}}
+\grRuleCont{\grTok{if} \grLit{(} \grVar{expr} \grLit{)} \grVar[1]{stmt}
+            \grTok{else} \grVar[2]{stmt}}
+\end{grammar}
+
+If \grVar{expr} evaluates to a non-zero value, then \grVar[1]{stmt}
+is executed. Otherwise, \grVar[2]{stmt} is executed, if present.
+
+\begin{grammar}
+\grRule{switch-stmt}{\grTok{switch} \grLit{(} \grVar{expr} \grLit{)}
+                     \grLit{\string{} \grVar{switch-body} \grLit{\string}}}
+\grRule{switch-body}{\grVar{switch-body} \grVar{switch-case}}
+\grRuleCont{\grEmpty}
+\grRule{switch-case}{\grTok{case} \grVar{constant} \grLit{:} \grVar{stmt-list}}
+\grRuleCont{\grTok{default} \grLit{:} \grVar{stmt-list}}
+\end{grammar}
+
+Evaluates \grVar{expr} and begins executing the statements in the switch
+starting at the one with a matching \grVar{switch-case}. Note that
+switch cases default to fallthrough to the next switch case, unless a
+\grTok{break} is encountered during execution.
+
+\begin{grammar}
+\grRule{loop-stmt}{\grTok{loop} \grVar{stmt}}
+\end{grammar}
+
+Repeats \grVar{stmt} indefinitely.
+
+\begin{grammar}
+\grRule{while-stmt}{\grTok{while} \grLit{(} \grVar{expr} \grLit{)} \grVar{stmt}}
+\end{grammar}
+
+Repeats \grVar{stmt} only as long as \grVar{expr} evaluates to a
+non-zero value.
+
+\begin{grammar}
+\grRule{for-stmt}{\grTok{for} \grLit{(} \grVar{id} \grTok{in} \grVar{expr}
+                  \grLit{(} \grVar{stmt}}
+\end{grammar}
+
+Executes \grVar{stmt} once for every item in \grVar{expr}, which should
+represent an iterable value. The item is assigned to a variable with
+the given \grVar{id}.
